@@ -3,8 +3,9 @@
 
 Vagrant.configure(2) do |config|
   config.vm.box = "ogarcia/archlinux-x64"
-  config.vm.box_version = "2016.07.01"
+  config.vm.box_version = "2016.10.01"
   config.vm.hostname = "terraform"
+  config.vbguest.auto_update = false
 
   config.ssh.forward_agent = true
 
@@ -17,7 +18,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", env: {"TERRAFORM_VERSION" => "0.7.7"}, inline: <<-SHELL
     pacman --noconfirm -Syu --ignore linux
-    pacman --noconfirm -S unzip wget git go
+    pacman --noconfirm -S unzip wget git go virtualbox-guest-utils-nox virtualbox-guest-modules-arch
     wget -nv https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
     unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /opt/terraform
 	rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
