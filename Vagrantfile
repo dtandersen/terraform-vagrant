@@ -15,7 +15,7 @@ Vagrant.configure(2) do |config|
     vb.cpus = 1
   end
 
-  config.vm.provision "shell", env: {"TERRAFORM_VERSION" => "0.7.1"}, inline: <<-SHELL
+  config.vm.provision "shell", env: {"TERRAFORM_VERSION" => "0.7.7"}, inline: <<-SHELL
     pacman --noconfirm -Syu --ignore linux
     pacman --noconfirm -S unzip wget git go
     wget -nv https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
