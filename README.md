@@ -15,3 +15,8 @@ Add credentials to /home/vagrant/.credentials.sh to load them automatically.
     export DIGITALOCEAN_TOKEN=
     export AWS_ACCESS_KEY_ID=
     export AWS_SECRET_ACCESS_KEY=
+    export VULTR_API_KEY=
+
+# Providers
+
+rgl's [Terraform provider for Vultr](https://github.com/rgl/terraform-provider-vultr) is included.
