@@ -17,10 +17,11 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision "shell", env: {"TERRAFORM_VERSION" => "0.7.7"}, inline: <<-SHELL
-    pacman --noconfirm -Syu --ignore linux
+    pacman --noconfirm -Syu
     pacman --noconfirm -S unzip wget git go virtualbox-guest-utils-nox virtualbox-guest-modules-arch
     wget -nv https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-    unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /opt/terraform
+	mkdir /opt/terraform
+    unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /opt/terraform/bin
 	rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 
 	# compile vultr provider
@@ -35,15 +36,16 @@ Vagrant.configure(2) do |config|
 	cd src/github.com/rgl/terraform-provider-vultr
 	go build
 	go test
-	mkdir /opt/terraform/bin/
 	cp terraform-provider-vultr* /opt/terraform/bin/
 
 	# clean up perms
 	chmod 755 /opt/terraform/
 	
 	# setup environment
-	echo "export PATH=/opt/terraform/bin:/opt/terraform:/vagrant/terraform:$PATH" >> /home/vagrant/.bashrc
+	echo "export PATH=/opt/terraform/bin:/vagrant/terraform:$PATH" >> /home/vagrant/.bashrc
 	echo "alias tf=/vagrant/tf.sh" >> /home/vagrant/.bashrc
 	echo "source ~/.credentials.sh" >> /home/vagrant/.bashrc
+	cp /vagrant/.credentials-base.sh /home/vagrant/.credentials.sh
+	chown vagrant:vagrant /home/vagrant/.credentials.sh
   SHELL
 end
