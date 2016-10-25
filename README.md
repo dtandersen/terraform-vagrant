@@ -4,7 +4,7 @@
 
 # How to use this VM?
 
-Run ```vagrant up``` and ```git clone``` a Terraform configuration. The Terraform command line utilities are on the PATH.
+Run ```vagrant up``` and then, if new guest utils were installed, ```vagrant reload```. Then ```git clone``` a Terraform configuration. The Terraform command line utilities are on the PATH.
 
 The development machine is based on Arch Linux.
 
