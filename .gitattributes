@@ -1,3 +1,4 @@
 * text=auto
 tf.sh eol=lf
 ca.sh eol=lf
+.credentials-base.sh eol=lf
