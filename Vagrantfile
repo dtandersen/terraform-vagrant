@@ -18,7 +18,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", env: {"TERRAFORM_VERSION" => "0.7.7"}, inline: <<-SHELL
     pacman --noconfirm -Syu
-    pacman --noconfirm -S unzip wget git go virtualbox-guest-utils-nox virtualbox-guest-modules-arch
+    pacman --noconfirm -S unzip wget git go virtualbox-guest-utils-nox virtualbox-guest-modules-arch ntpd
     wget -nv https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 	mkdir /opt/terraform
     unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /opt/terraform/bin
@@ -40,12 +40,15 @@ Vagrant.configure(2) do |config|
 
 	# clean up perms
 	chmod 755 /opt/terraform/
-	
+
 	# setup environment
 	echo "export PATH=/opt/terraform/bin:/vagrant/terraform:$PATH" >> /home/vagrant/.bashrc
 	echo "alias tf=/vagrant/tf.sh" >> /home/vagrant/.bashrc
 	echo "source ~/.credentials.sh" >> /home/vagrant/.bashrc
 	cp /vagrant/.credentials-base.sh /home/vagrant/.credentials.sh
 	chown vagrant:vagrant /home/vagrant/.credentials.sh
+
+	systemctl start ntpd
+	systemctl enable ntpd
   SHELL
 end
